@@ -8,12 +8,19 @@
 
 /* Begin PBXBuildFile section */
 		1E5AE5B12134698A00AE4D57 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E5AE5B02134698A00AE4D57 /* AppDelegate.swift */; };
-		1E5AE5B32134698A00AE4D57 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E5AE5B22134698A00AE4D57 /* ViewController.swift */; };
 		1E5AE5B62134698B00AE4D57 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1E5AE5B42134698A00AE4D57 /* Main.storyboard */; };
 		1E5AE5B82134698C00AE4D57 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1E5AE5B72134698C00AE4D57 /* Assets.xcassets */; };
 		1E5AE5BB2134698C00AE4D57 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1E5AE5B92134698C00AE4D57 /* LaunchScreen.storyboard */; };
 		1E5AE5C62134698C00AE4D57 /* SettlersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E5AE5C52134698C00AE4D57 /* SettlersTests.swift */; };
 		1E5AE5D12134698C00AE4D57 /* SettlersUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E5AE5D02134698C00AE4D57 /* SettlersUITests.swift */; };
+		1E5AE5DF21346B4D00AE4D57 /* GroupsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E5AE5DE21346B4D00AE4D57 /* GroupsTableViewController.swift */; };
+		1E5AE5E1213472A500AE4D57 /* GroupsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E5AE5E0213472A500AE4D57 /* GroupsTableViewCell.swift */; };
+		1E5AE5E321347B3900AE4D57 /* TransactionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E5AE5E221347B3900AE4D57 /* TransactionTableViewCell.swift */; };
+		1E5AE5E521347B5800AE4D57 /* TransactionsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E5AE5E421347B5800AE4D57 /* TransactionsTableViewController.swift */; };
+		1E5AE5E92134908700AE4D57 /* NewTransactionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E5AE5E82134908700AE4D57 /* NewTransactionViewController.swift */; };
+		1E5AE5EB213490AB00AE4D57 /* MemberTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E5AE5EA213490AB00AE4D57 /* MemberTableViewCell.swift */; };
+		1E5AE5EF21349D6C00AE4D57 /* TransactionDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E5AE5EE21349D6C00AE4D57 /* TransactionDetailViewController.swift */; };
+		1E5AE5F42134E9C900AE4D57 /* TMemberTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E5AE5F32134E9C900AE4D57 /* TMemberTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,7 +43,6 @@
 /* Begin PBXFileReference section */
 		1E5AE5AD2134698A00AE4D57 /* Settlers.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Settlers.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1E5AE5B02134698A00AE4D57 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		1E5AE5B22134698A00AE4D57 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		1E5AE5B52134698B00AE4D57 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		1E5AE5B72134698C00AE4D57 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1E5AE5BA2134698C00AE4D57 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -47,6 +53,14 @@
 		1E5AE5CC2134698C00AE4D57 /* SettlersUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SettlersUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1E5AE5D02134698C00AE4D57 /* SettlersUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettlersUITests.swift; sourceTree = "<group>"; };
 		1E5AE5D22134698C00AE4D57 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1E5AE5DE21346B4D00AE4D57 /* GroupsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupsTableViewController.swift; sourceTree = "<group>"; };
+		1E5AE5E0213472A500AE4D57 /* GroupsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupsTableViewCell.swift; sourceTree = "<group>"; };
+		1E5AE5E221347B3900AE4D57 /* TransactionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionTableViewCell.swift; sourceTree = "<group>"; };
+		1E5AE5E421347B5800AE4D57 /* TransactionsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsTableViewController.swift; sourceTree = "<group>"; };
+		1E5AE5E82134908700AE4D57 /* NewTransactionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTransactionViewController.swift; sourceTree = "<group>"; };
+		1E5AE5EA213490AB00AE4D57 /* MemberTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberTableViewCell.swift; sourceTree = "<group>"; };
+		1E5AE5EE21349D6C00AE4D57 /* TransactionDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailViewController.swift; sourceTree = "<group>"; };
+		1E5AE5F32134E9C900AE4D57 /* TMemberTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMemberTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,12 +111,13 @@
 		1E5AE5AF2134698A00AE4D57 /* Settlers */ = {
 			isa = PBXGroup;
 			children = (
-				1E5AE5B02134698A00AE4D57 /* AppDelegate.swift */,
-				1E5AE5B22134698A00AE4D57 /* ViewController.swift */,
-				1E5AE5B42134698A00AE4D57 /* Main.storyboard */,
-				1E5AE5B72134698C00AE4D57 /* Assets.xcassets */,
-				1E5AE5B92134698C00AE4D57 /* LaunchScreen.storyboard */,
+				1E5AE5F22134E98900AE4D57 /* TransactionDetailController */,
 				1E5AE5BC2134698C00AE4D57 /* Info.plist */,
+				1E5AE5EC213490B500AE4D57 /* NewTransactionController */,
+				1E5AE5E621348FCA00AE4D57 /* GroupsController */,
+				1E5AE5B42134698A00AE4D57 /* Main.storyboard */,
+				1E5AE5E72134900500AE4D57 /* TransactionsController */,
+				1E5AE5ED213490F200AE4D57 /* iOSFiles */,
 			);
 			path = Settlers;
 			sourceTree = "<group>";
@@ -123,6 +138,53 @@
 				1E5AE5D22134698C00AE4D57 /* Info.plist */,
 			);
 			path = SettlersUITests;
+			sourceTree = "<group>";
+		};
+		1E5AE5E621348FCA00AE4D57 /* GroupsController */ = {
+			isa = PBXGroup;
+			children = (
+				1E5AE5DE21346B4D00AE4D57 /* GroupsTableViewController.swift */,
+				1E5AE5E0213472A500AE4D57 /* GroupsTableViewCell.swift */,
+			);
+			path = GroupsController;
+			sourceTree = "<group>";
+		};
+		1E5AE5E72134900500AE4D57 /* TransactionsController */ = {
+			isa = PBXGroup;
+			children = (
+				1E5AE5E221347B3900AE4D57 /* TransactionTableViewCell.swift */,
+				1E5AE5E421347B5800AE4D57 /* TransactionsTableViewController.swift */,
+			);
+			path = TransactionsController;
+			sourceTree = "<group>";
+		};
+		1E5AE5EC213490B500AE4D57 /* NewTransactionController */ = {
+			isa = PBXGroup;
+			children = (
+				1E5AE5EA213490AB00AE4D57 /* MemberTableViewCell.swift */,
+				1E5AE5E82134908700AE4D57 /* NewTransactionViewController.swift */,
+			);
+			name = NewTransactionController;
+			path = "New Group";
+			sourceTree = "<group>";
+		};
+		1E5AE5ED213490F200AE4D57 /* iOSFiles */ = {
+			isa = PBXGroup;
+			children = (
+				1E5AE5B02134698A00AE4D57 /* AppDelegate.swift */,
+				1E5AE5B72134698C00AE4D57 /* Assets.xcassets */,
+				1E5AE5B92134698C00AE4D57 /* LaunchScreen.storyboard */,
+			);
+			path = iOSFiles;
+			sourceTree = "<group>";
+		};
+		1E5AE5F22134E98900AE4D57 /* TransactionDetailController */ = {
+			isa = PBXGroup;
+			children = (
+				1E5AE5F32134E9C900AE4D57 /* TMemberTableViewCell.swift */,
+				1E5AE5EE21349D6C00AE4D57 /* TransactionDetailViewController.swift */,
+			);
+			path = TransactionDetailController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -256,8 +318,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1E5AE5B32134698A00AE4D57 /* ViewController.swift in Sources */,
+				1E5AE5EF21349D6C00AE4D57 /* TransactionDetailViewController.swift in Sources */,
+				1E5AE5E321347B3900AE4D57 /* TransactionTableViewCell.swift in Sources */,
+				1E5AE5E521347B5800AE4D57 /* TransactionsTableViewController.swift in Sources */,
+				1E5AE5E92134908700AE4D57 /* NewTransactionViewController.swift in Sources */,
 				1E5AE5B12134698A00AE4D57 /* AppDelegate.swift in Sources */,
+				1E5AE5F42134E9C900AE4D57 /* TMemberTableViewCell.swift in Sources */,
+				1E5AE5DF21346B4D00AE4D57 /* GroupsTableViewController.swift in Sources */,
+				1E5AE5E1213472A500AE4D57 /* GroupsTableViewCell.swift in Sources */,
+				1E5AE5EB213490AB00AE4D57 /* MemberTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
