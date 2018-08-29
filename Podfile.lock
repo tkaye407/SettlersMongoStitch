@@ -1,0 +1,104 @@
+PODS:
+  - Bolts (1.9.0):
+    - Bolts/AppLinks (= 1.9.0)
+    - Bolts/Tasks (= 1.9.0)
+  - Bolts/AppLinks (1.9.0):
+    - Bolts/Tasks
+  - Bolts/Tasks (1.9.0)
+  - FacebookCore (0.3.2):
+    - Bolts (~> 1.8)
+    - FBSDKCoreKit (~> 4.35)
+  - FacebookLogin (0.3.2):
+    - Bolts (~> 1.8)
+    - FacebookCore (~> 0.3.2)
+    - FBSDKCoreKit (~> 4.35)
+    - FBSDKLoginKit (~> 4.35)
+  - FacebookShare (0.3.2):
+    - Bolts (~> 1.8)
+    - FacebookCore (~> 0.3.2)
+    - FBSDKCoreKit (~> 4.35)
+    - FBSDKShareKit (~> 4.35)
+  - FBSDKCoreKit (4.35.0):
+    - Bolts (~> 1.7)
+  - FBSDKLoginKit (4.35.0):
+    - FBSDKCoreKit
+  - FBSDKShareKit (4.35.0):
+    - FBSDKCoreKit (~> 4.35.0)
+  - StitchCore (4.0.5):
+    - StitchCoreSDK (~> 4.0.5)
+  - StitchCoreHTTPService (4.0.5):
+    - StitchCoreSDK (~> 4.0.5)
+  - StitchCoreRemoteMongoDBService (4.0.5):
+    - StitchCoreSDK (~> 4.0.5)
+  - StitchCoreSDK (4.0.5)
+  - StitchCoreTwilioService (4.0.5):
+    - StitchCoreSDK (~> 4.0.5)
+  - StitchHTTPService (4.0.5):
+    - StitchCore (~> 4.0.5)
+    - StitchCoreHTTPService (~> 4.0.5)
+  - StitchRemoteMongoDBService (4.0.5):
+    - StitchCore (~> 4.0.5)
+    - StitchCoreRemoteMongoDBService (~> 4.0.5)
+  - StitchSDK (4.0.5):
+    - StitchSDK/StitchSDK (= 4.0.5)
+  - StitchSDK/StitchHTTPService (4.0.5):
+    - StitchHTTPService (~> 4.0.5)
+  - StitchSDK/StitchRemoteMongoDBService (4.0.5):
+    - StitchRemoteMongoDBService (~> 4.0.5)
+  - StitchSDK/StitchSDK (4.0.5):
+    - StitchSDK/StitchRemoteMongoDBService
+  - StitchSDK/StitchTwilioService (4.0.5):
+    - StitchTwilioService (~> 4.0.5)
+  - StitchTwilioService (4.0.5):
+    - StitchCore (~> 4.0.5)
+    - StitchCoreTwilioService (~> 4.0.5)
+
+DEPENDENCIES:
+  - FacebookCore
+  - FacebookLogin
+  - FacebookShare
+  - FBSDKLoginKit
+  - StitchSDK (~> 4.0.5)
+  - StitchSDK/StitchHTTPService (~> 4.0.5)
+  - StitchSDK/StitchTwilioService (~> 4.0.5)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - Bolts
+    - FacebookCore
+    - FacebookLogin
+    - FacebookShare
+    - FBSDKCoreKit
+    - FBSDKLoginKit
+    - FBSDKShareKit
+    - StitchCore
+    - StitchCoreHTTPService
+    - StitchCoreRemoteMongoDBService
+    - StitchCoreSDK
+    - StitchCoreTwilioService
+    - StitchHTTPService
+    - StitchRemoteMongoDBService
+    - StitchSDK
+    - StitchTwilioService
+
+SPEC CHECKSUMS:
+  Bolts: ac6567323eac61e203f6a9763667d0f711be34c8
+  FacebookCore: fe93222bb70346730ef33b061d493e9e7a7cb1f5
+  FacebookLogin: a4e225974791c82836765a294582b4778baffc07
+  FacebookShare: 5319f2655d53d20c595745a68dae8476027b8bae
+  FBSDKCoreKit: 1a5b2e3ceb5ca827a53c54aa5f4a3480efff80d2
+  FBSDKLoginKit: 00a3d65d1226852f9d76dcddff01981e5e6d9c38
+  FBSDKShareKit: 2ddbd7e6432023fff957af62e23a3671b84319f7
+  StitchCore: 93969ed38c0777c9d12f3497a0fc37776e618ad5
+  StitchCoreHTTPService: e19811c712f1a151032f7eaadee018e1984622d7
+  StitchCoreRemoteMongoDBService: ea279f1595bd4bd08fd7b0154a2265cf160adbc3
+  StitchCoreSDK: c11f3f141b17f7da04bc204769355899c5de80ce
+  StitchCoreTwilioService: 0170ed5294010fb799f27e35d424b932b196102f
+  StitchHTTPService: df04b797739d843efb0fea8795781345c1d0de1c
+  StitchRemoteMongoDBService: e647002187b90bafcf83b7d2d5600016f6712417
+  StitchSDK: 066c767799237d3ddf49ba702f8fdc4199e7e68e
+  StitchTwilioService: 6372189650b7ad73b68cf6cb1968238c63ea4d45
+
+PODFILE CHECKSUM: 555f9771fb66303f7f4b2250ab23af0a3b1957a7
+
+COCOAPODS: 1.5.3

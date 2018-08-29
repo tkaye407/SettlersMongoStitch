@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import StitchCore
+import StitchRemoteMongoDBService
 
 class GroupsTableViewController: UITableViewController {
     
@@ -14,9 +16,23 @@ class GroupsTableViewController: UITableViewController {
     let numMems = [12, 13, 5]
     let total = [456, 555, 1200]
     let numTrans = [22, 32, 12]
+//    private lazy var stitchClient = Stitch.defaultAppClient!
+    private var mongoClient: RemoteMongoClient?
+    private var stitchClient: StitchAppClient?
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        do {
+            stitchClient = try Stitch.initializeAppClient(withClientAppID: "settlers-wwwep")
+        } catch {
+            print("ERROR")
+        }
+        if !stitchClient!.auth.isLoggedIn {
+            print("HELLO")
+        }
+//
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
