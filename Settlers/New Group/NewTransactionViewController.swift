@@ -23,7 +23,6 @@ class NewTransactionViewController: UIViewController, UITableViewDelegate, UITab
     
 
     @IBOutlet weak var memberTableView: UITableView!
-    
     @IBOutlet weak var descriptionField: UITextField!
     @IBOutlet weak var amountField: UITextField!
     @IBOutlet weak var titleField: UITextField!
@@ -46,6 +45,14 @@ class NewTransactionViewController: UIViewController, UITableViewDelegate, UITab
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    @IBAction func addTransactionPressed(_ sender: Any) {
+        addTransaction()
+    }
+    
+    func addTransaction() {
+        print("HI")
     }
     
 

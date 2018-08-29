@@ -13,39 +13,41 @@ import StitchCore
 
 class LoginViewController: UIViewController {
     
+    @IBOutlet weak var appName: UILabel!
+    @IBOutlet weak var appDescr: UILabel!
+    @IBOutlet weak var loginView: UIView!
     private var stitchClient: StitchAppClient?
     static var provider: StitchProviderType?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        do {
-            stitchClient = try Stitch.initializeAppClient(withClientAppID: "settlers-wwwep")
-        } catch {
-            print("ERROR")
-        }
         let loginButton = LoginButton(readPermissions: [ .publicProfile, .email, .userFriends ])
         loginButton.center = view.center
         view.addSubview(loginButton)
-
-        // Do any additional setup after loading the view.
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        stitchClient = appDelegate.stitchClient
+    }
+    
+    @IBAction func prepareForUnwind(segue: UIStoryboardSegue) {
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
         if let accessToken = FBSDKAccessToken.current() {
-            print("WE MADE IT")
             print(accessToken.userID)
             let credential = FacebookCredential.init(withAccessToken: accessToken.tokenString)
-            stitchClient!.auth.login(withCredential: credential) {result in
-                switch result {
-                case .success(_):
-                    print("LOGGED IN WITH STITCH")
-                    print(self.stitchClient!.auth.currentUser!.id)
-                case .failure(let error):
-                    print("failed logging in Stitch with Facebook. error: \(error)")
-                    LoginManager().logOut()
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            if let stitchClient = appDelegate.stitchClient {
+                stitchClient.auth.login(withCredential: credential) {result in
+                    switch result {
+                    case .success(_):
+                        print("Stith UUID: " + stitchClient.auth.currentUser!.id)
+                        self.performSegue(withIdentifier: "ToGroups", sender: self)
+                    case .failure(let error):
+                        print("failed logging in Stitch with Facebook. error: \(error)")
+                    }
                 }
             }
-            
         }
 //        self.performSegue(withIdentifier: "ToGroups", sender: self)
     }

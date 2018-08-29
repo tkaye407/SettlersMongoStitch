@@ -9,61 +9,90 @@
 import UIKit
 import StitchCore
 import StitchRemoteMongoDBService
-
+import FacebookLogin
+import FBSDKLoginKit
 class GroupsTableViewController: UITableViewController {
     
-    let names = ["Argentina", "Soccer Team", "Roomates"]
-    let numMems = [12, 13, 5]
-    let total = [456, 555, 1200]
-    let numTrans = [22, 32, 12]
-//    private lazy var stitchClient = Stitch.defaultAppClient!
-    private var mongoClient: RemoteMongoClient?
+    private var groups: [Document] = []
     private var stitchClient: StitchAppClient?
-    
+    private var mongoClient: RemoteMongoClient?
+    private var groupCollection: RemoteMongoCollection<Document>?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        do {
-            stitchClient = try Stitch.initializeAppClient(withClientAppID: "settlers-wwwep")
-        } catch {
-            print("ERROR")
-        }
-        if !stitchClient!.auth.isLoggedIn {
-            print("HELLO")
-        }
-//
-
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        stitchClient = appDelegate.stitchClient
+        mongoClient = stitchClient?.serviceClient(fromFactory: remoteMongoClientFactory, withName: "mongodb-atlas")
+        groupCollection = mongoClient?.db("settlers").collection("groups")
+        print("NAME")
+        print( stitchClient?.auth.currentUser?.profile.name! as! String)
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        groupCollection?.find().asArray({ result in
+            switch result {
+            case .success(let result):
+                print("Found documents:")
+                self.groups = result
+                DispatchQueue.main.async{
+                    self.tableView.reloadData()
+                }
+            case .failure(let error):
+                print("Error in finding documents: \(error)")
+            }
+        })
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
-    // MARK: - Table view data source
-
+    
+    func addGroup(gName: String, gDesc: String) {
+        var itemDoc = Document()
+        var memDoc = Document()
+        memDoc["name"] = stitchClient?.auth.currentUser?.profile.name! as! String
+        memDoc["user_id"] = self.stitchClient!.auth.currentUser!.id
+        itemDoc["members"] = [memDoc]
+        itemDoc["title"] = gName
+        itemDoc["description"] = gDesc
+        itemDoc["transactions"] = []
+        self.groupCollection?.insertOne(itemDoc, {result in
+            switch result {
+            case .success(_):
+                print("SUCCESSFULLY Added Document")
+            case .failure(let error):
+                print("failed logging out: \(error)")
+            }
+        })
+    }
+    
+    // MARK: TABLEVIEW METHODS
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
     }
-
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return names.count
+        print(groups.count)
+        return groups.count
     }
-
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "GroupCell", for: indexPath) as! GroupsTableViewCell
-        cell.groupName.text = names[indexPath.row]
-        cell.numMembers.text = String(numMems[indexPath.row]) + " Members"
-        cell.totalSpent.text = "$" + String(total[indexPath.row])
-        cell.numTransactions.text = String(numTrans[indexPath.row]) + " Transactions"
+        let doc = groups[indexPath.row]
+        cell.groupName.text = doc["title"] as? String
+        let members = doc["members"] as! [Document]
+        cell.numMembers.text = String(members.count) + " Members"
+        cell.totalSpent.text = "$"
+        let transactions = doc["transactions"] as! [String]
+        cell.numTransactions.text = String(transactions.count) + " Transactions"
         return cell
     }
     
@@ -72,10 +101,9 @@ class GroupsTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // TODO: Send the document through
         self.performSegue(withIdentifier: "ToTransactions", sender: self)
     }
-
+    
     /*
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -111,21 +139,35 @@ class GroupsTableViewController: UITableViewController {
     }
     */
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        if segue.identifier == "ToTransactions" {
+            let newVC = segue.destination as! TransactionsTableViewController
+            newVC.group = groups[(self.tableView.indexPathForSelectedRow?.row)!]
+        }
     }
-    */
+ 
     
+    
+    
+    // MARK: BUTTON HANDLERS
     @IBAction func signOutClicked(_ sender: Any) {
         // Sign Out
-        
-        self.performSegue(withIdentifier: "toSignIn", sender: self)
-        
+        print("Stitch UUID (LOGOUT): " + self.stitchClient!.auth.currentUser!.id)
+        stitchClient?.auth.logout({result in
+            switch result {
+            case .success(_):
+                print("SUCCESSFULLY LOGGED OUT")
+                let loginManager: FBSDKLoginManager = FBSDKLoginManager()
+                loginManager.logOut()
+                self.performSegue(withIdentifier: "unwindToLogin", sender: self)
+            case .failure(let error):
+                print("failed logging out: \(error)")
+            }
+        });
     }
     
     @IBAction func newGroupClicked(_ sender: Any) {
@@ -137,12 +179,8 @@ class GroupsTableViewController: UITableViewController {
             alert -> Void in
             let groupName = alertController.textFields![0] as UITextField
             let groupDescription = alertController.textFields![1] as UITextField
-            
             if groupName.text != "", groupDescription.text != "" {
-                //TODO: Create new group and navigate to it
-                print(groupName.text!)
-                print(groupDescription.text!)
-                
+                self.addGroup(gName: groupName.text!, gDesc: groupDescription.text!)
             } else {
                 let errorAlert = UIAlertController(title: "Error", message: "Please input both a group name and description", preferredStyle: .alert)
                 errorAlert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: {
@@ -162,9 +200,6 @@ class GroupsTableViewController: UITableViewController {
             textField.placeholder = "Description of Group..."
             //textField.textAlignment = .center
         })
-        
         self.present(alertController, animated: true, completion: nil)
     }
-    
-
 }

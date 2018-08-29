@@ -16,12 +16,17 @@ import FacebookCore
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    var stitchClient: StitchAppClient?
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
-        
+        do {
+            stitchClient = try Stitch.initializeAppClient(withClientAppID: "settlers-wwwep")
+        } catch {
+            print("ERROR")
+        }
         return true
     }
     

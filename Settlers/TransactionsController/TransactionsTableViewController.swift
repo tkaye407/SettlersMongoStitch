@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import StitchCore
 
 class TransactionsTableViewController: UITableViewController {
     let names = ["Acai Bowls", "Flights", "Hostile in Argentina", "Coffee"]
@@ -14,6 +15,7 @@ class TransactionsTableViewController: UITableViewController {
     let splits = [4, 6, 2, 4]
     let payers = ["Tyler", "Ted", "Drew", "Tyler"]
     let groupName = "Argentina"
+    var group: Document = Document()
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = groupName + " Transactions"
@@ -23,6 +25,10 @@ class TransactionsTableViewController: UITableViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        print(group)
     }
 
     override func didReceiveMemoryWarning() {
