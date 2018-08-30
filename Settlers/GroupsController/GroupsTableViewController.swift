@@ -9,7 +9,7 @@
 import UIKit
 import StitchCore
 import StitchRemoteMongoDBService
-import FacebookLogin
+//import FacebookLogin
 import FBSDKLoginKit
 class GroupsTableViewController: UITableViewController {
     
@@ -24,20 +24,14 @@ class GroupsTableViewController: UITableViewController {
         stitchClient = appDelegate.stitchClient
         mongoClient = stitchClient?.serviceClient(fromFactory: remoteMongoClientFactory, withName: "mongodb-atlas")
         groupCollection = mongoClient?.db("settlers").collection("groups")
-        print("NAME")
-        print( stitchClient?.auth.currentUser?.profile.name! as! String)
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
-    
-    override func viewDidAppear(_ animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         groupCollection?.find().asArray({ result in
             switch result {
             case .success(let result):
-                print("Found documents:")
                 self.groups = result
                 DispatchQueue.main.async{
                     self.tableView.reloadData()
@@ -47,7 +41,7 @@ class GroupsTableViewController: UITableViewController {
             }
         })
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -65,7 +59,7 @@ class GroupsTableViewController: UITableViewController {
         self.groupCollection?.insertOne(itemDoc, {result in
             switch result {
             case .success(_):
-                print("SUCCESSFULLY Added Document")
+                self.viewWillAppear(true)
             case .failure(let error):
                 print("failed logging out: \(error)")
             }
@@ -91,8 +85,19 @@ class GroupsTableViewController: UITableViewController {
         let members = doc["members"] as! [Document]
         cell.numMembers.text = String(members.count) + " Members"
         cell.totalSpent.text = "$"
-        let transactions = doc["transactions"] as! [String]
+        let transactions = doc["transactions"] as! [Document]
         cell.numTransactions.text = String(transactions.count) + " Transactions"
+        var total = 0.0
+        for t in transactions {
+            let t_amt = t["amount"] as! Double
+            total += t_amt
+        }
+        let formatter = NumberFormatter()
+        formatter.locale = Locale.current
+        formatter.numberStyle = .currency
+        if let formattedTipAmount = formatter.string(from: total as NSNumber) {
+            cell.totalSpent.text = "\(formattedTipAmount)"
+        }
         return cell
     }
     

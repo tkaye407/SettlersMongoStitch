@@ -68,40 +68,48 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="89.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="GroupName" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gNW-rF-Fsv">
-                                            <rect key="frame" x="12" y="11" width="235" height="21"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="GroupName" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gNW-rF-Fsv">
+                                            <rect key="frame" x="12" y="11" width="96" height="21"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Num Members" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cJH-WC-AS4">
-                                            <rect key="frame" x="31" y="40" width="235" height="18"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Num Members" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cJH-WC-AS4">
+                                            <rect key="frame" x="22" y="40" width="101" height="18"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Total $$" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mUg-WB-CUp">
-                                            <rect key="frame" x="296" y="33.5" width="63" height="21"/>
+                                            <rect key="frame" x="303" y="64.5" width="63" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Total Spent:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9BL-n3-yMc">
+                                            <rect key="frame" x="274" y="38.5" width="92" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Num Transactions" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eXW-Z5-EdC">
-                                            <rect key="frame" x="32" y="66" width="124" height="18"/>
+                                            <rect key="frame" x="22" y="66" width="124" height="18"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="gNW-rF-Fsv" firstAttribute="top" secondItem="UsV-iT-tY9" secondAttribute="top" constant="11" id="7dZ-Dg-7pc"/>
-                                        <constraint firstItem="gNW-rF-Fsv" firstAttribute="leading" secondItem="UsV-iT-tY9" secondAttribute="leading" constant="12" id="9ba-w6-ewR"/>
-                                        <constraint firstItem="eXW-Z5-EdC" firstAttribute="top" secondItem="cJH-WC-AS4" secondAttribute="bottom" constant="8" id="ATI-an-gUH"/>
-                                        <constraint firstItem="eXW-Z5-EdC" firstAttribute="leading" secondItem="cJH-WC-AS4" secondAttribute="leading" id="CsU-iP-Zmu"/>
-                                        <constraint firstItem="cJH-WC-AS4" firstAttribute="leading" secondItem="gNW-rF-Fsv" secondAttribute="leading" constant="20" id="G70-Kv-zE1" userLabel="Num Members.leading = Group Name.leading - 10"/>
-                                        <constraint firstAttribute="trailing" secondItem="mUg-WB-CUp" secondAttribute="trailing" constant="16" id="MSJ-iM-NCz"/>
-                                        <constraint firstItem="mUg-WB-CUp" firstAttribute="centerY" secondItem="UsV-iT-tY9" secondAttribute="centerY" id="RPg-7M-6gp"/>
-                                        <constraint firstItem="cJH-WC-AS4" firstAttribute="top" secondItem="gNW-rF-Fsv" secondAttribute="bottom" constant="8" id="XcN-LN-6Ej"/>
+                                        <constraint firstItem="cJH-WC-AS4" firstAttribute="leading" secondItem="UsV-iT-tY9" secondAttribute="leading" constant="22" id="4Ex-Lm-gK4"/>
+                                        <constraint firstItem="mUg-WB-CUp" firstAttribute="centerY" secondItem="eXW-Z5-EdC" secondAttribute="centerY" id="52M-M8-AhQ"/>
+                                        <constraint firstAttribute="trailing" secondItem="9BL-n3-yMc" secondAttribute="trailing" constant="9" id="8gn-hA-Jne"/>
+                                        <constraint firstItem="eXW-Z5-EdC" firstAttribute="leading" secondItem="cJH-WC-AS4" secondAttribute="leading" id="EhH-3d-eqL"/>
+                                        <constraint firstItem="mUg-WB-CUp" firstAttribute="trailing" secondItem="9BL-n3-yMc" secondAttribute="trailing" id="S8L-8B-Uqg"/>
+                                        <constraint firstItem="gNW-rF-Fsv" firstAttribute="top" secondItem="UsV-iT-tY9" secondAttribute="top" constant="11" id="VHP-aG-0zk"/>
+                                        <constraint firstItem="9BL-n3-yMc" firstAttribute="centerY" secondItem="cJH-WC-AS4" secondAttribute="centerY" id="Zn7-Au-NtI"/>
+                                        <constraint firstItem="eXW-Z5-EdC" firstAttribute="top" secondItem="cJH-WC-AS4" secondAttribute="bottom" constant="8" id="ckR-L3-bgn"/>
+                                        <constraint firstItem="cJH-WC-AS4" firstAttribute="top" secondItem="gNW-rF-Fsv" secondAttribute="bottom" constant="8" id="xVp-rV-bSx"/>
+                                        <constraint firstItem="gNW-rF-Fsv" firstAttribute="leading" secondItem="UsV-iT-tY9" secondAttribute="leading" constant="12" id="yV7-bb-fHv"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
@@ -205,7 +213,7 @@
                         </connections>
                     </tableView>
                     <toolbarItems>
-                        <barButtonItem title="Add Transaction" id="OE5-Ud-kpZ">
+                        <barButtonItem title="New Transaction" id="OE5-Ud-kpZ">
                             <connections>
                                 <action selector="addTransaction:" destination="xUB-43-XtD" id="kIy-Ss-GTR"/>
                             </connections>
@@ -431,7 +439,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                                <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
                             </textField>
                             <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ihX-Cv-Tjq">
                                 <rect key="frame" x="138" y="255" width="209" height="30"/>

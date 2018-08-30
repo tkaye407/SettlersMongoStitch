@@ -115,6 +115,9 @@ class TransactionsTableViewController: UITableViewController {
             ctrl.descr = "For the children"
             ctrl.names = ["Tyler", "Drew", "Ted", "Nicole", "Gordon"]
             ctrl.titleS = "Cookies"
+        } else if segue.identifier! == "ToAddNewTransaction" {
+            let ctrl = segue.destination as! NewTransactionViewController
+            ctrl.groupDoc = group
         }
     }
  

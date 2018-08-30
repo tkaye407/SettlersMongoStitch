@@ -7,19 +7,19 @@
 //
 
 import UIKit
+import StitchCore
+import StitchRemoteMongoDBService
 
 class NewTransactionViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
+    
+    // Variables for Stitch / Mongo
+    private var stitchClient: StitchAppClient?
+    private var mongoClient: RemoteMongoClient?
+    private var groupCollection: RemoteMongoCollection<Document>?
+    
+    // Group Variable
+    var groupDoc: Document = Document()
     let members = ["Tyler", "Drew", "Ted", "TK", "Nicole", "Gordon"]
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return members.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "MemberCell", for: indexPath) as! MemberTableViewCell
-        cell.name.text = members[indexPath.row]
-        return cell
-    }
     
 
     @IBOutlet weak var memberTableView: UITableView!
@@ -33,8 +33,16 @@ class NewTransactionViewController: UIViewController, UITableViewDelegate, UITab
         descriptionField.delegate = self
         amountField.delegate = self
         titleField.delegate = self
-
-        // Do any additional setup after loading the view.
+        
+        // Set above mongo / stitch variables
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        stitchClient = appDelegate.stitchClient
+        mongoClient = stitchClient?.serviceClient(fromFactory: remoteMongoClientFactory, withName: "mongodb-atlas")
+        groupCollection = mongoClient?.db("settlers").collection("groups")
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
     }
     
     func textFieldShouldReturn(_ scoreText: UITextField) -> Bool {
@@ -47,12 +55,55 @@ class NewTransactionViewController: UIViewController, UITableViewDelegate, UITab
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func addTransactionPressed(_ sender: Any) {
-        addTransaction()
+    func addTransaction(transTitle: String, transDescr: String, transAmt: Double) {
+        var tDoc = Document()
+        tDoc["title"] = transTitle
+        tDoc["description"] = transDescr
+        tDoc["amount"] = transAmt
+        tDoc["payer_id"] = self.stitchClient!.auth.currentUser!.id
+        tDoc["payee_id"] = [self.stitchClient!.auth.currentUser!.id]
+        tDoc["t_oid"] = ObjectId()
+        var uFilt = Document()
+        var uFilt2 = Document()
+        uFilt2["transactions"] = tDoc
+        uFilt["$push"] = uFilt2
+        let g_id = groupDoc["_id"] as! ObjectId
+        groupCollection?.updateOne(
+            filter: ["_id": g_id],
+            update: uFilt,
+            options: nil,
+            {result in
+                switch result {
+                case .success(_):
+                    _ = self.navigationController?.popViewController(animated: true)
+                case .failure(let error):
+                    let alert = UIAlertController(title: "New Transaction Failed", message: error.localizedDescription, preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default,handler: nil))
+                    self.present(alert, animated: true)
+                }
+            })
     }
-    
-    func addTransaction() {
-        print("HI")
+    @IBAction func addTransactionPressed(_ sender: Any) {
+        if titleField.text != "" {
+            if descriptionField.text != "" {
+                if amountField.text != "", let tAmt = Double(amountField.text!) {
+                    addTransaction(transTitle: titleField.text!, transDescr: descriptionField.text!, transAmt: tAmt)
+                } else {
+                    let alert = UIAlertController(title: "Invalid Input", message: "Please enter a valid amount", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default,handler: nil))
+                    self.present(alert, animated: true)
+                }
+            } else {
+                let alert = UIAlertController(title: "Invalid Input", message: "Please do not leave the description field blank", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default,handler: nil))
+                self.present(alert, animated: true)
+            }
+            
+        } else {
+            let alert = UIAlertController(title: "Invalid Input", message: "Please do not leave the title field blank", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default,handler: nil))
+            self.present(alert, animated: true)
+        }
     }
     
 
@@ -65,5 +116,15 @@ class NewTransactionViewController: UIViewController, UITableViewDelegate, UITab
         // Pass the selected object to the new view controller.
     }
     */
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return members.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "MemberCell", for: indexPath) as! MemberTableViewCell
+        cell.name.text = members[indexPath.row]
+        return cell
+    }
 
 }
