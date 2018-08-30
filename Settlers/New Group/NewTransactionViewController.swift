@@ -75,7 +75,9 @@ class NewTransactionViewController: UIViewController, UITableViewDelegate, UITab
             {result in
                 switch result {
                 case .success(_):
-                    _ = self.navigationController?.popViewController(animated: true)
+                    DispatchQueue.main.async{
+                        self.navigationController?.popViewController(animated: true)
+                    }
                 case .failure(let error):
                     let alert = UIAlertController(title: "New Transaction Failed", message: error.localizedDescription, preferredStyle: .alert)
                     alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default,handler: nil))

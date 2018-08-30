@@ -7,39 +7,37 @@
 //
 
 import UIKit
+import StitchCore
 
 class TransactionDetailViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print(names.count)
-        return names.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "TMemberCell", for: indexPath) as! TMemberTableViewCell
-        cell.title.text = names[indexPath.row]
-        return cell
-    }
-    
-
-    var names = [String]()
-    var titleS = ""
-    var amt = 0.0
-    var descr = ""
-    @IBOutlet weak var amountLabel: UILabel!
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var descriptionLabel: UILabel!
+    @IBOutlet weak var descrField: UITextField!
+    @IBOutlet weak var amountField: UITextField!
+    @IBOutlet weak var payerField: UITextField!
+    @IBOutlet weak var titleField: UITextField!
     @IBOutlet weak var memberTableView: UITableView!
+    
+    var names = [String]()
+    var transaction: Document = Document()
+    var idToName: [String: String] = [:]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        amountLabel.text = "$" + String(amt)
-        titleLabel.text = titleS
-        descriptionLabel.text = descr
+        
         memberTableView.delegate = self
         memberTableView.dataSource = self
         memberTableView.reloadData()
 
-        // Do any additional setup after loading the view.
+        titleField.isUserInteractionEnabled = false
+        titleField.text = transaction["title"] as? String
+        
+        amountField.isUserInteractionEnabled = false
+        amountField.text = String(transaction["amount"] as! Double)
+        
+        payerField.isUserInteractionEnabled = false
+        payerField.text = idToName[transaction["payer_id"] as! String]
+        
+        descrField.isUserInteractionEnabled = false
+        descrField.text = transaction["description"] as? String
     }
 
     override func didReceiveMemoryWarning() {
@@ -57,5 +55,16 @@ class TransactionDetailViewController: UIViewController, UITableViewDataSource, 
         // Pass the selected object to the new view controller.
     }
     */
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        print(names.count)
+        return names.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "TMemberCell", for: indexPath) as! TMemberTableViewCell
+        cell.title.text = names[indexPath.row]
+        return cell
+    }
 
 }
