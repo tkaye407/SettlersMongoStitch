@@ -33,8 +33,10 @@ class TransactionsTableViewController: UITableViewController {
         groupCollection?.find(["_id": group?.objectID], options: nil).asArray({result in
             switch result {
             case .success(let result):
+                if result.count <= 0 {
+                    self.navigationController?.popViewController(animated: true)
+                }
                 self.group = Group(document: result[0])!
-                print(self.group?.transactions[0])
                 (DispatchQueue.main.async{
                     self.tableView.reloadData()
                 })
@@ -48,7 +50,7 @@ class TransactionsTableViewController: UITableViewController {
     func reverseEngineerNames() {
         var dict: [String: String] = [:]
         for m in (group?.members)! {
-            dict[m.id as! String] = m.name as? String
+            dict[m.id] = m.name as? String
         }
         idToName = dict
     }

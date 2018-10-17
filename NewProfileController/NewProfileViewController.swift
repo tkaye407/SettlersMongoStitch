@@ -13,10 +13,12 @@ import StitchCore
 
 class NewProfileViewController: UIViewController, UITextFieldDelegate {
 
+    // UI Elements
     @IBOutlet weak var nameBox: UITextField!
     @IBOutlet weak var emailBox: UITextField!
     @IBOutlet weak var venmoBox: UITextField!
     
+    // Stitch Variables
     private lazy var stitchClient = Stitch.defaultAppClient!
     private var mongoClient: RemoteMongoClient?
     private var profileCollection: RemoteMongoCollection<Document>?
@@ -78,7 +80,6 @@ class NewProfileViewController: UIViewController, UITextFieldDelegate {
             newProfile["email"] = emailBox.text ?? ""
             newProfile["venmo"] = venmoBox.text ?? ""
             newProfile["user_id"] = stitchClient.auth.currentUser?.id
-            print(newProfile)
             self.profileCollection?.insertOne(newProfile, {result in
                 switch result {
                 case .success(_):

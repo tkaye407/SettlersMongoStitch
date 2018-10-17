@@ -15,9 +15,12 @@ import StitchRemoteMongoDBService
 
 class LoginViewController: UIViewController {
     
+    // UI Elements
     @IBOutlet weak var appName: UILabel!
     @IBOutlet weak var appDescr: UILabel!
     @IBOutlet weak var loginView: UIView!
+    
+    // Stitch Variables
     static var provider: StitchProviderType?
     private lazy var stitchClient = Stitch.defaultAppClient!
     private var mongoClient: RemoteMongoClient?
@@ -42,7 +45,6 @@ class LoginViewController: UIViewController {
                 stitchClient.auth.login(withCredential: credential) {result in
                     switch result {
                     case .success(_):
-                        print("Stith UUID: " + stitchClient.auth.currentUser!.id)
                         self.checkProfileStatus()
                     case .failure(let error):
                         print("failed logging in Stitch with Facebook. error: \(error)")
@@ -50,7 +52,6 @@ class LoginViewController: UIViewController {
                 }
             }
         }
-//        self.performSegue(withIdentifier: "ToGroups", sender: self)
     }
 
     override func didReceiveMemoryWarning() {

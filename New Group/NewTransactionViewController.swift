@@ -12,20 +12,20 @@ import StitchRemoteMongoDBService
 
 class NewTransactionViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
     
-    // Variables for Stitch / Mongo
+    // UI Elements
+    @IBOutlet weak var memberTableView: UITableView!
+    @IBOutlet weak var descriptionField: UITextField!
+    @IBOutlet weak var amountField: UITextField!
+    @IBOutlet weak var titleField: UITextField!
+    
+    // Stitch variables
     private var stitchClient: StitchAppClient?
     private var mongoClient: RemoteMongoClient?
     private var groupCollection: RemoteMongoCollection<Document>?
     
     // Group Variable
     var group: Group?
-    let members = ["Tyler", "Drew", "Ted", "TK", "Nicole", "Gordon"]
     
-
-    @IBOutlet weak var memberTableView: UITableView!
-    @IBOutlet weak var descriptionField: UITextField!
-    @IBOutlet weak var amountField: UITextField!
-    @IBOutlet weak var titleField: UITextField!
     override func viewDidLoad() {
         super.viewDidLoad()
         memberTableView.delegate = self
@@ -110,12 +110,12 @@ class NewTransactionViewController: UIViewController, UITableViewDelegate, UITab
     */
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return members.count
+        return (group?.members.count)!
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MemberCell", for: indexPath) as! MemberTableViewCell
-        cell.name.text = members[indexPath.row]
+        cell.name.text = group?.members[indexPath.row].name
         return cell
     }
 
