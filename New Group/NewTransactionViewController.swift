@@ -56,6 +56,15 @@ class NewTransactionViewController: UIViewController, UITableViewDelegate, UITab
     }
     
     func addTransaction(transTitle: String, transDescr: String, transAmt: Double) {
+        var payee: [String] = []
+        for (index, mem) in (group?.members.enumerated())! {
+            let cell = self.memberTableView.cellForRow(at: IndexPath.init(row: index, section: 0)) as? MemberTableViewCell
+            if (cell?.include.isOn)! {
+                payee.append(mem.id)
+            }
+        }
+        print(payee)
+        return
         let newTrans = Transaction.newTransaction(title: transTitle, description: transDescr, amount: transAmt, payee: [self.stitchClient!.auth.currentUser!.id])
         let uFilt = Document(["$push": Document(["transactions": newTrans])])
         groupCollection?.updateOne(

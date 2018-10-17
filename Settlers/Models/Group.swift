@@ -51,6 +51,7 @@ struct Group {
         doc[Keys.descriptionKey] = description
         doc[Keys.membersKey] = [Member.newMember(name: Stitch.defaultAppClient?.auth.currentUser?.profile.name ?? "", id: Stitch.defaultAppClient?.auth.currentUser?.id ?? "")]
         doc[Keys.idKey] = ObjectId()
+        doc[Keys.transactionsKey] = []
         return doc
     }
 }

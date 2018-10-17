@@ -7,15 +7,11 @@
 //
 
 import UIKit
-import StitchCore
-import StitchRemoteMongoDBService
 import FBSDKLoginKit
+import StitchCore
 class GroupsTableViewController: UITableViewController {
     
     private var groups: [Group] = []
-    private lazy var stitchClient = Stitch.defaultAppClient!
-    private var mongoClient: RemoteMongoClient?
-    private var groupCollection: RemoteMongoCollection<Document>?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,22 +30,12 @@ class GroupsTableViewController: UITableViewController {
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
     override func viewWillAppear(_ animated: Bool) {
-        mongoClient = stitchClient.serviceClient(fromFactory: remoteMongoClientFactory, withName: "mongodb-atlas")
-        groupCollection = mongoClient?.db("settlers").collection("groups")
-        groupCollection?.find().asArray({ result in
-            switch result {
-            case .success(let result):
-                self.groups = []
-                for res in result {
-                    self.groups.append(Group(document: res)!)
-                }
-                DispatchQueue.main.async{
-                    self.tableView.reloadData()
-                }
-            case .failure(let error):
-                print("Error in finding documents: \(error)")
+        GroupService.get{ (groupData) in
+            self.groups = groupData
+            DispatchQueue.main.async{
+                self.tableView.reloadData()
             }
-        })
+        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -59,14 +45,8 @@ class GroupsTableViewController: UITableViewController {
     
     func addGroup(gName: String, gDesc: String) {
         let group = Group.newGroup(title: gName, description: gDesc)
-        self.groupCollection?.insertOne(group, {result in
-            switch result {
-            case .success(_):
-                self.viewWillAppear(true)
-            case .failure(let error):
-                print("failed logging out: \(error)")
-            }
-        })
+        let handler: () -> Void = {self.viewWillAppear(true)}
+        GroupService.insert(group: group, doneHandler: handler)
     }
     
     // MARK: TABLEVIEW METHODS
@@ -84,7 +64,7 @@ class GroupsTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "GroupCell", for: indexPath) as! GroupsTableViewCell
         let group = groups[indexPath.row]
         cell.groupName.text = group.title
-        cell.numMembers.text = String(group.members.count)
+        cell.numMembers.text = String(group.members.count) + " Members"
         cell.numTransactions.text = String(group.transactions.count) + " Transactions"
 
         var total: Float = 0.0
@@ -160,7 +140,7 @@ class GroupsTableViewController: UITableViewController {
     // MARK: BUTTON HANDLERS
     @IBAction func signOutClicked(_ sender: Any) {
         // Sign Out
-        stitchClient.auth.logout({result in
+        Stitch.defaultAppClient?.auth.logout({result in
             switch result {
             case .success(_):
                 let loginManager: FBSDKLoginManager = FBSDKLoginManager()
