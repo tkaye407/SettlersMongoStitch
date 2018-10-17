@@ -29,15 +29,6 @@ struct Transaction {
     
     //MARK: - Init
     init?(document: Document) {
-//        print(document)
-//        print("HI")
-//        print(document[Keys.idKey] as? ObjectId)
-//        print(document[Keys.amountKey] as? Double)
-//        print(document[Keys.payerKey] as? String)
-//        print(document[Keys.payeeKey] as? [String])
-//        print(document[Keys.descriptionKey] as? String)
-//        print(document[Keys.titleKey])
-//        print(document[Keys.titleKey] as? String )
         guard   let tObjectID = document[Keys.idKey] as? ObjectId,
             let tAmount = document[Keys.amountKey] as? Double,
             let tPayer = document[Keys.payerKey] as? String,

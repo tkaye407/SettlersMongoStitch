@@ -82,7 +82,7 @@ class TransactionsTableViewController: UITableViewController {
         }
         
         cell.transactionSplit.text = String((t?.payee.count)!) + " other members"
-        cell.transactionPayer.text = idToName[(t?.payer)!],
+        cell.transactionPayer.text = idToName[(t?.payer)!]
         return cell
     }
     
