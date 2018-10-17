@@ -16,7 +16,7 @@ class TransactionDetailViewController: UIViewController, UITableViewDataSource, 
     @IBOutlet weak var titleField: UITextField!
     @IBOutlet weak var memberTableView: UITableView!
     
-    var names = [String]()
+    var members: [Member] = []
     var transaction: Transaction?
     var idToName: [String: String] = [:]
     
@@ -57,13 +57,12 @@ class TransactionDetailViewController: UIViewController, UITableViewDataSource, 
     */
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print(names.count)
-        return names.count
+        return members.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TMemberCell", for: indexPath) as! TMemberTableViewCell
-        cell.title.text = names[indexPath.row]
+        cell.title.text = members[indexPath.row].name
         return cell
     }
 

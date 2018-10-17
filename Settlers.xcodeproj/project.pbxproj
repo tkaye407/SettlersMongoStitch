@@ -29,6 +29,7 @@
 		1EFA426E2176682B0044ED15 /* Member.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EFA426D2176682B0044ED15 /* Member.swift */; };
 		1EFA4275217791950044ED15 /* ProfileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EFA4274217791950044ED15 /* ProfileService.swift */; };
 		1EFA42772177926F0044ED15 /* GroupService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EFA42762177926F0044ED15 /* GroupService.swift */; };
+		1EFA427921779EE20044ED15 /* TransactionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EFA427821779EE20044ED15 /* TransactionService.swift */; };
 		9EE55D4585928A701E1B3EA9 /* Pods_SettlersTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D70C9709B9C6C0B708BB6FB /* Pods_SettlersTests.framework */; };
 		C334A372DF5BF77B96F5688F /* Pods_Settlers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5FA016EE9AEE255BA76817B /* Pods_Settlers.framework */; };
 		EEB18B14D159CF1BC6F7DEB8 /* Pods_SettlersUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69162F3CA4EC5C562DA04A59 /* Pods_SettlersUITests.framework */; };
@@ -81,6 +82,7 @@
 		1EFA426D2176682B0044ED15 /* Member.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Member.swift; sourceTree = "<group>"; };
 		1EFA4274217791950044ED15 /* ProfileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileService.swift; sourceTree = "<group>"; };
 		1EFA42762177926F0044ED15 /* GroupService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupService.swift; sourceTree = "<group>"; };
+		1EFA427821779EE20044ED15 /* TransactionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionService.swift; sourceTree = "<group>"; };
 		23D7E7EE521ACFFD36659DEF /* Pods-SettlersTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SettlersTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-SettlersTests/Pods-SettlersTests.release.xcconfig"; sourceTree = "<group>"; };
 		37121E93A6A3D7CCF1E2132C /* Pods-Settlers.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Settlers.release.xcconfig"; path = "Pods/Target Support Files/Pods-Settlers/Pods-Settlers.release.xcconfig"; sourceTree = "<group>"; };
 		69162F3CA4EC5C562DA04A59 /* Pods_SettlersUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SettlersUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -273,6 +275,7 @@
 			children = (
 				1EFA4274217791950044ED15 /* ProfileService.swift */,
 				1EFA42762177926F0044ED15 /* GroupService.swift */,
+				1EFA427821779EE20044ED15 /* TransactionService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -551,6 +554,7 @@
 				1E5AE5E521347B5800AE4D57 /* TransactionsTableViewController.swift in Sources */,
 				1EFA426E2176682B0044ED15 /* Member.swift in Sources */,
 				1E5AE5E92134908700AE4D57 /* NewTransactionViewController.swift in Sources */,
+				1EFA427921779EE20044ED15 /* TransactionService.swift in Sources */,
 				1EFA426A217662A20044ED15 /* Transaction.swift in Sources */,
 				1E5AE5B12134698A00AE4D57 /* AppDelegate.swift in Sources */,
 				1EFA426C217667520044ED15 /* Group.swift in Sources */,

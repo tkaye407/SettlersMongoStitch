@@ -56,33 +56,25 @@ class NewTransactionViewController: UIViewController, UITableViewDelegate, UITab
     }
     
     func addTransaction(transTitle: String, transDescr: String, transAmt: Double) {
-        var payee: [String] = []
+        var payees: [String] = []
         for (index, mem) in (group?.members.enumerated())! {
             let cell = self.memberTableView.cellForRow(at: IndexPath.init(row: index, section: 0)) as? MemberTableViewCell
             if (cell?.include.isOn)! {
-                payee.append(mem.id)
+                payees.append(mem.id)
             }
         }
-        print(payee)
-        return
-        let newTrans = Transaction.newTransaction(title: transTitle, description: transDescr, amount: transAmt, payee: [self.stitchClient!.auth.currentUser!.id])
-        let uFilt = Document(["$push": Document(["transactions": newTrans])])
-        groupCollection?.updateOne(
-            filter: ["_id": group?.objectID],
-            update: uFilt,
-            options: nil,
-            {result in
-                switch result {
-                case .success(_):
-                    DispatchQueue.main.async{
-                        self.navigationController?.popViewController(animated: true)
-                    }
-                case .failure(let error):
-                    let alert = UIAlertController(title: "New Transaction Failed", message: error.localizedDescription, preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default,handler: nil))
-                    self.present(alert, animated: true)
-                }
-            })
+        let newTrans = Transaction.newTransaction(title: transTitle, description: transDescr, amount: transAmt, payee: payees)
+        let successHandler: () -> Void = {
+            DispatchQueue.main.async{
+                self.navigationController?.popViewController(animated: true)
+            }
+        }
+        let failureHandler: (StitchError) -> Void = {error in
+            let alert = UIAlertController(title: "New Transaction Failed", message: error.localizedDescription, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default,handler: nil))
+            self.present(alert, animated: true)
+        }
+        TransactionService.insert(groupID: (group?.objectID)!, transaction: newTrans, successHandler: successHandler, failureHandler: failureHandler)
     }
     @IBAction func addTransactionPressed(_ sender: Any) {
         if titleField.text != "" {

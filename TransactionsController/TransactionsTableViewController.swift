@@ -23,6 +23,7 @@ class TransactionsTableViewController: UITableViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        self.title = group?.title
         reloadGroupData()
     }
     
@@ -96,6 +97,16 @@ class TransactionsTableViewController: UITableViewController {
         // TODO SEND PROPER INFORMATION THROUGH
         self.performSegue(withIdentifier: "ToTransactionDetail", sender: self)
     }
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == UITableViewCellEditingStyle.delete {
+            let handler: () -> Void = {
+                self.group?.transactions.remove(at: indexPath.row)
+                self.tableView.reloadData()
+            }
+            TransactionService.delete(groupID: (group?.objectID)!, transactionID: (group?.transactions[indexPath.row].objectID)!, handler: handler)
+        }
+    }
  
 
     /*
@@ -144,7 +155,7 @@ class TransactionsTableViewController: UITableViewController {
             let ctrl = segue.destination as! TransactionDetailViewController
             ctrl.transaction = group?.transactions[(tableView.indexPathForSelectedRow?.row)!]
             ctrl.idToName = self.idToName
-            ctrl.names = ["Tyler", "Drew", "Ted", "Nicole", "Gordon"]
+            ctrl.members = (group?.members)!
         } else if segue.identifier! == "ToAddNewTransaction" {
             let ctrl = segue.destination as! NewTransactionViewController
             ctrl.group = self.group
