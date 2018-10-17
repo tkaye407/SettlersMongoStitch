@@ -17,7 +17,7 @@ class TransactionDetailViewController: UIViewController, UITableViewDataSource, 
     @IBOutlet weak var memberTableView: UITableView!
     
     var names = [String]()
-    var transaction: Document = Document()
+    var transaction: Transaction?
     var idToName: [String: String] = [:]
     
     override func viewDidLoad() {
@@ -28,16 +28,16 @@ class TransactionDetailViewController: UIViewController, UITableViewDataSource, 
         memberTableView.reloadData()
 
         titleField.isUserInteractionEnabled = false
-        titleField.text = transaction["title"] as? String
+        titleField.text = transaction?.title
         
         amountField.isUserInteractionEnabled = false
-        amountField.text = String(transaction["amount"] as! Double)
+        amountField.text = String(transaction!.amount)
         
         payerField.isUserInteractionEnabled = false
-        payerField.text = idToName[transaction["payer_id"] as! String]
+        payerField.text = idToName[(transaction?.payer)!]
         
         descrField.isUserInteractionEnabled = false
-        descrField.text = transaction["description"] as? String
+        descrField.text = transaction?.description
     }
 
     override func didReceiveMemoryWarning() {

@@ -10,22 +10,24 @@ import UIKit
 import FacebookLogin
 import FBSDKLoginKit
 import StitchCore
+import StitchRemoteMongoDBService
+
 
 class LoginViewController: UIViewController {
     
     @IBOutlet weak var appName: UILabel!
     @IBOutlet weak var appDescr: UILabel!
     @IBOutlet weak var loginView: UIView!
-    private var stitchClient: StitchAppClient?
     static var provider: StitchProviderType?
+    private lazy var stitchClient = Stitch.defaultAppClient!
+    private var mongoClient: RemoteMongoClient?
+    private var profileCollection: RemoteMongoCollection<Document>?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         let loginButton = LoginButton(readPermissions: [ .publicProfile, .email, .userFriends ])
         loginButton.center = view.center
         view.addSubview(loginButton)
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        stitchClient = appDelegate.stitchClient
     }
     
     @IBAction func prepareForUnwind(segue: UIStoryboardSegue) {
@@ -34,7 +36,6 @@ class LoginViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         if let accessToken = FBSDKAccessToken.current() {
-            print(accessToken.userID)
             let credential = FacebookCredential.init(withAccessToken: accessToken.tokenString)
             let appDelegate = UIApplication.shared.delegate as! AppDelegate
             if let stitchClient = appDelegate.stitchClient {
@@ -42,7 +43,7 @@ class LoginViewController: UIViewController {
                     switch result {
                     case .success(_):
                         print("Stith UUID: " + stitchClient.auth.currentUser!.id)
-                        self.performSegue(withIdentifier: "ToGroups", sender: self)
+                        self.checkProfileStatus()
                     case .failure(let error):
                         print("failed logging in Stitch with Facebook. error: \(error)")
                     }
@@ -67,5 +68,22 @@ class LoginViewController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
+    
+    func checkProfileStatus() {
+        mongoClient = stitchClient.serviceClient(fromFactory: remoteMongoClientFactory, withName: "mongodb-atlas")
+        profileCollection = mongoClient?.db("settlers").collection("profiles")
+        profileCollection?.find().asArray({ result in
+            switch result {
+            case .success(let result):
+                if result.count == 0 {
+                    self.performSegue(withIdentifier: "ToNewProfile", sender: self)
+                } else {
+                    self.performSegue(withIdentifier: "ToGroups", sender: self)
+                }
+            case .failure(let error):
+                print("Error in finding documents: \(error)")
+            }
+        })
+    }
 
 }

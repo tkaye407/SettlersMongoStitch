@@ -18,7 +18,7 @@ class NewTransactionViewController: UIViewController, UITableViewDelegate, UITab
     private var groupCollection: RemoteMongoCollection<Document>?
     
     // Group Variable
-    var groupDoc: Document = Document()
+    var group: Group?
     let members = ["Tyler", "Drew", "Ted", "TK", "Nicole", "Gordon"]
     
 
@@ -56,20 +56,10 @@ class NewTransactionViewController: UIViewController, UITableViewDelegate, UITab
     }
     
     func addTransaction(transTitle: String, transDescr: String, transAmt: Double) {
-        var tDoc = Document()
-        tDoc["title"] = transTitle
-        tDoc["description"] = transDescr
-        tDoc["amount"] = transAmt
-        tDoc["payer_id"] = self.stitchClient!.auth.currentUser!.id
-        tDoc["payee_id"] = [self.stitchClient!.auth.currentUser!.id]
-        tDoc["t_oid"] = ObjectId()
-        var uFilt = Document()
-        var uFilt2 = Document()
-        uFilt2["transactions"] = tDoc
-        uFilt["$push"] = uFilt2
-        let g_id = groupDoc["_id"] as! ObjectId
+        let newTrans = Transaction.newTransaction(title: transTitle, description: transDescr, amount: transAmt, payee: [self.stitchClient!.auth.currentUser!.id])
+        let uFilt = Document(["$push": Document(["transactions": newTrans])])
         groupCollection?.updateOne(
-            filter: ["_id": g_id],
+            filter: ["_id": group?.objectID],
             update: uFilt,
             options: nil,
             {result in

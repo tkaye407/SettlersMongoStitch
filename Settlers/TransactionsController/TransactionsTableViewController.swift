@@ -11,15 +11,11 @@ import StitchCore
 import StitchRemoteMongoDBService
 
 class TransactionsTableViewController: UITableViewController {
-    var group: Document = Document()
-    var transactions: [Document] = []
+    var group: Group?
     var idToName: [String: String] = [:]
     override func viewDidLoad() {
         super.viewDidLoad()
-        transactions = group["transactions"] as! [Document]
-        self.title = (group["title"] as! String)
         reverseEngineerNames()
-        print(idToName)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -27,7 +23,6 @@ class TransactionsTableViewController: UITableViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        print("RUNNING VIEW WILL APPEAR")
         reloadGroupData()
     }
     
@@ -35,16 +30,14 @@ class TransactionsTableViewController: UITableViewController {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let mongoClient = appDelegate.stitchClient?.serviceClient(fromFactory: remoteMongoClientFactory, withName: "mongodb-atlas")
         let groupCollection = mongoClient?.db("settlers").collection("groups")
-        let oid = group["_id"] as! ObjectId
-        groupCollection?.find(["_id": oid], options: nil).asArray({result in
+        groupCollection?.find(["_id": group?.objectID], options: nil).asArray({result in
             switch result {
             case .success(let result):
-                print("NEW RELOAD")
-                self.group = result[0]
-                self.transactions = self.group["transactions"] as! [Document]
-                DispatchQueue.main.async{
+                self.group = Group(document: result[0])!
+                print(self.group?.transactions[0])
+                (DispatchQueue.main.async{
                     self.tableView.reloadData()
-                }
+                })
             case .failure(let error):
                 print("Error in finding documents: \(error)")
             }
@@ -53,10 +46,9 @@ class TransactionsTableViewController: UITableViewController {
     }
     
     func reverseEngineerNames() {
-        let members = group["members"] as! [Document]
         var dict: [String: String] = [:]
-        for m in members {
-            dict[m["user_id"] as! String] = m["name"] as? String
+        for m in (group?.members)! {
+            dict[m.id as! String] = m.name as? String
         }
         idToName = dict
     }
@@ -74,24 +66,23 @@ class TransactionsTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return transactions.count
+        return (group?.transactions.count)!
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TransactionCell", for: indexPath) as! TransactionTableViewCell
-        let t = transactions[indexPath.row]
-        cell.transactionName.text = t["title"] as! String
+        let t = group?.transactions[indexPath.row]
+        cell.transactionName.text = t?.title
         
         let formatter = NumberFormatter()
         formatter.locale = Locale.current
         formatter.numberStyle = .currency
-        if let formattedTipAmount = formatter.string(from: t["amount"] as! NSNumber) {
-            cell.transactionAmount.text = "\(formattedTipAmount)"
+        if let fNum = formatter.string(for: t?.amount) {
+            cell.transactionAmount.text = "\(fNum)"
         }
         
-        let payees = t["payee_id"] as! [String]
-        cell.transactionSplit.text = String(payees.count) + " other members"
-        cell.transactionPayer.text = "Tyler"
+        cell.transactionSplit.text = String((t?.payee.count)!) + " other members"
+        cell.transactionPayer.text = idToName[(t?.payer)!],
         return cell
     }
     
@@ -149,12 +140,15 @@ class TransactionsTableViewController: UITableViewController {
         // Pass the selected object to the new view controller.
         if segue.identifier! == "ToTransactionDetail" {
             let ctrl = segue.destination as! TransactionDetailViewController
-            ctrl.transaction = transactions[(tableView.indexPathForSelectedRow?.row)!]
+            ctrl.transaction = group?.transactions[(tableView.indexPathForSelectedRow?.row)!]
             ctrl.idToName = self.idToName
             ctrl.names = ["Tyler", "Drew", "Ted", "Nicole", "Gordon"]
         } else if segue.identifier! == "ToAddNewTransaction" {
             let ctrl = segue.destination as! NewTransactionViewController
-            ctrl.groupDoc = group
+            ctrl.group = self.group
+        } else if segue.identifier! == "ToAddNewMember" {
+            let ctrl = segue.destination as! AddMemberTableViewController
+            ctrl.group = self.group
         }
     }
  
@@ -163,6 +157,7 @@ class TransactionsTableViewController: UITableViewController {
     }
     
     @IBAction func addMemberTouched(_ sender: Any) {
+        self.performSegue(withIdentifier: "ToAddNewMember", sender: self)
         
     }
     @IBAction func addPaymentTouched(_ sender: Any) {

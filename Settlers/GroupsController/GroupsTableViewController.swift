@@ -9,30 +9,40 @@
 import UIKit
 import StitchCore
 import StitchRemoteMongoDBService
-//import FacebookLogin
 import FBSDKLoginKit
 class GroupsTableViewController: UITableViewController {
     
-    private var groups: [Document] = []
-    private var stitchClient: StitchAppClient?
+    private var groups: [Group] = []
+    private lazy var stitchClient = Stitch.defaultAppClient!
     private var mongoClient: RemoteMongoClient?
     private var groupCollection: RemoteMongoCollection<Document>?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        stitchClient = appDelegate.stitchClient
-        mongoClient = stitchClient?.serviceClient(fromFactory: remoteMongoClientFactory, withName: "mongodb-atlas")
-        groupCollection = mongoClient?.db("settlers").collection("groups")
-
+        
+//        stitchClient.callFunction(withName: "getNameAndDescription", withArgs: ["args"], withRequestTimeout: 5.0)
+//        {(result: StitchResult<String>) in
+//            switch result {
+//            case .success(let stringResult):
+//                print("String result: \(stringResult)")
+//            case .failure(let error):
+//                print("Error retrieving String: \(String(describing: error))")
+//            }
+//        }
+        
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
     override func viewWillAppear(_ animated: Bool) {
+        mongoClient = stitchClient.serviceClient(fromFactory: remoteMongoClientFactory, withName: "mongodb-atlas")
+        groupCollection = mongoClient?.db("settlers").collection("groups")
         groupCollection?.find().asArray({ result in
             switch result {
             case .success(let result):
-                self.groups = result
+                self.groups = []
+                for res in result {
+                    self.groups.append(Group(document: res)!)
+                }
                 DispatchQueue.main.async{
                     self.tableView.reloadData()
                 }
@@ -48,15 +58,8 @@ class GroupsTableViewController: UITableViewController {
     }
     
     func addGroup(gName: String, gDesc: String) {
-        var itemDoc = Document()
-        var memDoc = Document()
-        memDoc["name"] = stitchClient?.auth.currentUser?.profile.name! as! String
-        memDoc["user_id"] = self.stitchClient!.auth.currentUser!.id
-        itemDoc["members"] = [memDoc]
-        itemDoc["title"] = gName
-        itemDoc["description"] = gDesc
-        itemDoc["transactions"] = []
-        self.groupCollection?.insertOne(itemDoc, {result in
+        let group = Group.newGroup(title: gName, description: gDesc)
+        self.groupCollection?.insertOne(group, {result in
             switch result {
             case .success(_):
                 self.viewWillAppear(true)
@@ -68,29 +71,25 @@ class GroupsTableViewController: UITableViewController {
     
     // MARK: TABLEVIEW METHODS
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
+        // #warning Incomplete immentation, return the number of sections
         return 1
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        print(groups.count)
         return groups.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "GroupCell", for: indexPath) as! GroupsTableViewCell
-        let doc = groups[indexPath.row]
-        cell.groupName.text = doc["title"] as? String
-        let members = doc["members"] as! [Document]
-        cell.numMembers.text = String(members.count) + " Members"
-        cell.totalSpent.text = "$"
-        let transactions = doc["transactions"] as! [Document]
-        cell.numTransactions.text = String(transactions.count) + " Transactions"
-        var total = 0.0
-        for t in transactions {
-            let t_amt = t["amount"] as! Double
-            total += t_amt
+        let group = groups[indexPath.row]
+        cell.groupName.text = group.title
+        cell.numMembers.text = String(group.members.count)
+        cell.numTransactions.text = String(group.transactions.count) + " Transactions"
+
+        var total: Float = 0.0
+        for t in group.transactions {
+          total += t.amount
         }
         let formatter = NumberFormatter()
         formatter.locale = Locale.current
@@ -149,23 +148,21 @@ class GroupsTableViewController: UITableViewController {
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        print("In prepare")
         if segue.identifier == "ToTransactions" {
             let newVC = segue.destination as! TransactionsTableViewController
+            print("group in prepare")
+            print(groups[(self.tableView.indexPathForSelectedRow?.row)!])
             newVC.group = groups[(self.tableView.indexPathForSelectedRow?.row)!]
         }
     }
- 
-    
-    
     
     // MARK: BUTTON HANDLERS
     @IBAction func signOutClicked(_ sender: Any) {
         // Sign Out
-        print("Stitch UUID (LOGOUT): " + self.stitchClient!.auth.currentUser!.id)
-        stitchClient?.auth.logout({result in
+        stitchClient.auth.logout({result in
             switch result {
             case .success(_):
-                print("SUCCESSFULLY LOGGED OUT")
                 let loginManager: FBSDKLoginManager = FBSDKLoginManager()
                 loginManager.logOut()
                 self.performSegue(withIdentifier: "unwindToLogin", sender: self)

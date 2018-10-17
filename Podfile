@@ -6,7 +6,6 @@ target 'Settlers' do
   use_frameworks!
 
   # Pods for Settlers
-  pod 'FBSDKLoginKit'
   pod 'FacebookCore'
   pod 'FacebookLogin'
   pod 'FacebookShare'

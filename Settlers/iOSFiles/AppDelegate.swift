@@ -23,7 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
         do {
-            stitchClient = try Stitch.initializeAppClient(withClientAppID: "settlers-wwwep")
+            stitchClient = try Stitch.initializeDefaultAppClient(withClientAppID: "settlers-wwwep")
         } catch {
             print("ERROR")
         }
